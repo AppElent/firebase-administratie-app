@@ -6,11 +6,10 @@ import { useSnackbar } from 'notistack';
 
 const isObject = (obj: any): boolean => Object.prototype.toString.call(obj) === '[object Object]';
 
-const backend = process.env.REACT_APP_API_BASE_URL; //'https://appelent-api.herokuapp.com';
-
 export function useFetch(arg1: any, arg2: any): any {
   const { user, log } = useSession();
   const cache = useCache();
+  const backend = cache.get('environment');
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   let url: any = null;
