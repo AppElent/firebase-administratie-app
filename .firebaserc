@@ -1,0 +1,20 @@
+{
+  "projects": {
+    "default": "administratie-app"
+  },
+  "targets": {
+    "administratie-app": {
+      "hosting": {
+        "dev": [
+          "dev-administratie"
+        ],
+        "staging": [
+          "staging-administratie"
+        ],
+        "prod": [
+          "adminstratie-app"
+        ]
+      }
+    }
+  }
+}
