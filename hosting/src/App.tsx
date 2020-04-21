@@ -72,13 +72,13 @@ const App: FunctionComponent = () => {
 
   let environment = 'production';
   let apiUrl = 'https://api.appelent.com';
-  if(window.location.host.toLowerCase().startsWith('localhost')){
+  if (window.location.host.toLowerCase().startsWith('localhost')) {
     environment = 'local';
     apiUrl = 'http://localhost:3001';
-  }else if(window.location.host.toLowerCase().startsWith('dev.')){
+  } else if (window.location.host.toLowerCase().startsWith('dev.')) {
     environment = 'development';
     apiUrl = 'https://appelent-api-dev.herokuapp.com';
-  } else if(window.location.host.toLowerCase().startsWith('staging.')){
+  } else if (window.location.host.toLowerCase().startsWith('staging.')) {
     environment = 'staging';
     apiUrl = 'https://appelent-api-staging.herokuapp.com';
   }

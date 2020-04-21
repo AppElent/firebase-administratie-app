@@ -45,11 +45,11 @@ export const fetchBackend = async (url, options) => {
 */
 
 let apiUrl = 'https://api.appelent.com';
-if(window.location.host.toLowerCase().startsWith('localhost')){
+if (window.location.host.toLowerCase().startsWith('localhost')) {
   apiUrl = 'http://localhost:3001';
-}else if(window.location.host.toLowerCase().startsWith('dev.')){
+} else if (window.location.host.toLowerCase().startsWith('dev.')) {
   apiUrl = 'https://appelent-api-dev.herokuapp.com';
-} else if(window.location.host.toLowerCase().startsWith('staging.')){
+} else if (window.location.host.toLowerCase().startsWith('staging.')) {
   apiUrl = 'https://appelent-api-staging.herokuapp.com';
 }
 

@@ -9,7 +9,7 @@ const isObject = (obj: any): boolean => Object.prototype.toString.call(obj) === 
 export function useFetch(arg1: any, arg2: any): any {
   const { user, log } = useSession();
   const cache = useCache();
-  const backend = cache.get('environment');
+  const backend = cache.get('apiUrl');
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   let url: any = null;
