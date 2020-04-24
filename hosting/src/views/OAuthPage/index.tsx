@@ -12,15 +12,15 @@ import { settings as bunqSettings } from 'appcomponents/SettingCardBunq';
 const useStyles = makeStyles((theme: Theme) => ({
   deleteButton: {
     color: 'red',
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   button: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
 }));
 
 const microsoftSaveFunction = async (session: any, accesstoken: any) => {
-  if(!accesstoken){
+  if (!accesstoken) {
     return;
   }
   console.log(accesstoken);
@@ -29,7 +29,7 @@ const microsoftSaveFunction = async (session: any, accesstoken: any) => {
     token: accesstoken.data.token,
   };
   session.ref.update({ microsoft: saveObject });
-}
+};
 
 const defaultSaveFunction = (name: string) => async (session: any, accesstoken: any) => {
   console.log(accesstoken);
@@ -38,11 +38,11 @@ const defaultSaveFunction = (name: string) => async (session: any, accesstoken: 
     token: accesstoken.data.token,
   };
   session.ref.update({ [name]: saveObject });
-}
+};
 
 const defaultDeleteFunction = (name: string) => async (session: any) => {
-  session.ref.update({ [name]: {success: false} });
-}
+  session.ref.update({ [name]: { success: false } });
+};
 
 const OAuthPage = (): JSX.Element => {
   const session = useSession();
@@ -65,7 +65,7 @@ const OAuthPage = (): JSX.Element => {
   const oauthConfig: any = {
     bunq: bunqSettings,
     enelogic: enelogicSettings,
-    microsoft: {}
+    microsoft: {},
   };
 
   const oauthSettings: any = oauthConfig[name];
@@ -93,17 +93,50 @@ const OAuthPage = (): JSX.Element => {
   }
   if (action === 'refresh') {
     const updateFunction = oauthSettings.updateSettings ?? oauthSettings.saveSettings ?? defaultSaveFunction(name);
-    return (<><Typography variant="h1">OAuth 2.0 refresh</Typography><OauthRefresh refreshUrl={refreshUrl} saveFunction={updateFunction} token={session.userInfo[name].token}></OauthRefresh></>)
+    return (
+      <>
+        <Typography variant="h1">OAuth 2.0 refresh</Typography>
+        <OauthRefresh
+          refreshUrl={refreshUrl}
+          saveFunction={updateFunction}
+          token={session.userInfo[name].token}
+        ></OauthRefresh>
+      </>
+    );
   }
 
   const deleteFunction = oauthSettings.deleteSettings ?? defaultDeleteFunction(name);
   const updateFunction = oauthSettings.updateSettings ?? oauthSettings.saveSettings ?? defaultSaveFunction(name);
-  return <div>
-    <Typography variant="h1">OAuth 2.0 {name}</Typography><br />
-    <OauthAuthorize className={classes.button} title="Connect" formatUrl={formatUrl} formatUrlKey={'format_url_' + name} /><br />
-    <OauthRefresh className={classes.button} refreshUrl={refreshUrl} saveFunction={updateFunction} token={session.userInfo[name].token}></OauthRefresh>
-    <Button className={classes.deleteButton} onClick={() => {deleteFunction(session)}} variant="outlined">Delete</Button><br /><pre>{JSON.stringify(session.userInfo[name], null, 2)}</pre>
-  </div>;
+  return (
+    <div>
+      <Typography variant="h1">OAuth 2.0 {name}</Typography>
+      <br />
+      <OauthAuthorize
+        className={classes.button}
+        title="Connect"
+        formatUrl={formatUrl}
+        formatUrlKey={'format_url_' + name}
+      />
+      <br />
+      <OauthRefresh
+        className={classes.button}
+        refreshUrl={refreshUrl}
+        saveFunction={updateFunction}
+        token={session.userInfo[name].token}
+      ></OauthRefresh>
+      <Button
+        className={classes.deleteButton}
+        onClick={() => {
+          deleteFunction(session);
+        }}
+        variant="outlined"
+      >
+        Delete
+      </Button>
+      <br />
+      <pre>{JSON.stringify(session.userInfo[name], null, 2)}</pre>
+    </div>
+  );
 };
 
 export default OAuthPage;

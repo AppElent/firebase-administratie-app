@@ -35,12 +35,11 @@ const OauthReceiver: React.FC<OauthReceiverType> = ({
           if (accesstoken === undefined) return setNewRedirectUrl(redirectUrl);
           console.log(accesstoken);
           if (accesstoken.success) {
-            if(typeof saveFunction === 'function'){
+            if (typeof saveFunction === 'function') {
               await saveFunction(session, accesstoken);
-            }else{
+            } else {
               console.log('AccessToken', accesstoken);
             }
-            
           }
           let pathname;
           if (accesstoken?.data?.state?.origin) {

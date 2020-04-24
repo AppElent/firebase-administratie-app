@@ -25,8 +25,8 @@ export const settings = {
     const saveObject = {
       success: accesstoken.success,
       environment: 'PRODUCTION',
-      token: accesstoken.data.token
-    }
+      token: accesstoken.data.token,
+    };
     session.ref.update({ bunq: saveObject });
     if (accesstoken.success) {
       //setLoadBunqData(true);

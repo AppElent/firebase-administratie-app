@@ -191,7 +191,7 @@ export const getData = async (user: any, datefrom: string, dateto: string, confi
 };
 
 export const saveEnelogicSettings = async (session: any, accesstoken: any) => {
-  if(!accesstoken) return;
+  if (!accesstoken) return;
   console.log('beginSaveEnelogicToken', accesstoken);
   const saveObject: any = {};
   if (!accesstoken.success) {

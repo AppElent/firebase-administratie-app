@@ -3,12 +3,7 @@ import Button from '@material-ui/core/Button';
 
 import { useSession, useFetch } from 'hooks';
 
-const OauthAuthorize = ({
-  formatUrlKey,
-  title,
-  formatUrl,
-  ...props
-}: any): JSX.Element => {
+const OauthAuthorize = ({ formatUrlKey, title, formatUrl, ...props }: any): JSX.Element => {
   const { user } = useSession();
 
   const { data: url, request } = useFetch(formatUrl, {
