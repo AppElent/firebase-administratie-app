@@ -20,8 +20,8 @@ export const settings = {
   refreshUrl: '/api/oauth/refresh/enelogic',
   formatUrl: '/api/oauth/formaturl/enelogic',
   saveSettings: saveEnelogicSettings,
-  deleteSettings: (ref: any) => () => {
-    ref.update({ enelogic: { success: false } });
+  deleteSettings: (session: any) => {
+    session.ref.update({ enelogic: { success: false } });
   },
 };
 

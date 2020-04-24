@@ -6,6 +6,7 @@ import { Card, CardHeader, CardContent, CardActions, Divider, Typography, Circul
 import { useSession } from 'hooks';
 import { fetchBackend, refreshOauth } from 'helpers';
 import { Button, OauthAuthorize, OauthReceiver } from 'components';
+import { access } from 'fs';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -20,32 +21,35 @@ export const settings = {
   exchangeUrl: '/api/bunq/oauth/exchange',
   refreshUrl: '/api/bunq/oauth/refresh',
   formatUrl: '/api/oauth/formaturl/bunq',
-  saveSettings: (ref: any, bunqConfig: any) => async (accesstoken: any) => {
-    if (bunqConfig === undefined) bunqConfig = {};
-    bunqConfig['success'] = accesstoken.success;
-    bunqConfig['environment'] = 'PRODUCTION';
-    ref.update({ bunq: bunqConfig });
+  saveSettingsTemp: async (session: any, accesstoken: any) => {
+    const saveObject = {
+      success: accesstoken.success,
+      environment: 'PRODUCTION',
+      token: accesstoken.data.token
+    }
+    session.ref.update({ bunq: saveObject });
     if (accesstoken.success) {
       //setLoadBunqData(true);
     }
   },
-  deleteSettings: async (ref: any) => {
-    await ref.update({ bunq: { success: false } });
+  deleteSettings: async (session: any) => {
+    console.log(session);
+    await session.ref.update({ bunq: { success: false } });
   },
 };
 
 const SettingCardBunq: any = ({ action }: any): any => {
   const classes = useStyles();
-  const { user, userInfo, ref } = useSession();
+  const session = useSession();
   const { t } = useTranslation();
 
   const [loadingToken, setLoadingToken] = useState(false);
 
   const createBunqSandbox = async () => {
     setLoadingToken(true);
-    const data = await fetchBackend('/api/bunq/sandbox', { user });
+    const data = await fetchBackend('/api/bunq/sandbox', { user: session.user });
     console.log(data);
-    await ref.update({ bunq: { success: true, environment: 'SANDBOX' } });
+    await session.ref.update({ bunq: { success: true, environment: 'SANDBOX' } });
     setLoadingToken(false);
   };
 
@@ -57,7 +61,7 @@ const SettingCardBunq: any = ({ action }: any): any => {
       <Divider />
       <CardContent>
         <Typography>
-          {userInfo.bunq.success
+          {session.userInfo.bunq.success
             ? 'Connectie succesvol'
             : 'Bunq connectie is niet gemaakt. Deze is nodig om de data op te kunnen halen.'}
         </Typography>
@@ -75,7 +79,7 @@ const SettingCardBunq: any = ({ action }: any): any => {
         <Button
           className={classes.deleteButton}
           onClick={() => {
-            settings.deleteSettings(ref);
+            settings.deleteSettings(session);
           }}
           variant="outlined"
         >

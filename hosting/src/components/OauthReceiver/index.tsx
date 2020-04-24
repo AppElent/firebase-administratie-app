@@ -33,8 +33,14 @@ const OauthReceiver: React.FC<OauthReceiverType> = ({
           const body = { code, state };
           const accesstoken = await fetchBackend(exchangeUrl, { method: 'POST', body, user: session.user });
           if (accesstoken === undefined) return setNewRedirectUrl(redirectUrl);
+          console.log(accesstoken);
           if (accesstoken.success) {
-            await saveFunction(session, accesstoken);
+            if(typeof saveFunction === 'function'){
+              await saveFunction(session, accesstoken);
+            }else{
+              console.log('AccessToken', accesstoken);
+            }
+            
           }
           let pathname;
           if (accesstoken?.data?.state?.origin) {

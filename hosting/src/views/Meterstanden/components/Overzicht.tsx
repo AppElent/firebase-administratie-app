@@ -80,7 +80,7 @@ const Overzicht = () => {
   const columns = [
     {
       title: 'Datum',
-      field: 'datetime_verbruik',
+      field: 'datetimeVerbruik',
     },
     {
       title: 'KwH verbruik laag',

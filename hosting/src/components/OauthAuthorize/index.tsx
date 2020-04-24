@@ -7,11 +7,8 @@ const OauthAuthorize = ({
   formatUrlKey,
   title,
   formatUrl,
-}: {
-  formatUrlKey: string;
-  title: string;
-  formatUrl: string;
-}): JSX.Element => {
+  ...props
+}: any): JSX.Element => {
   const { user } = useSession();
 
   const { data: url, request } = useFetch(formatUrl, {
@@ -24,7 +21,7 @@ const OauthAuthorize = ({
   }, [formatUrl, user]);
 
   return (
-    <Button color="primary" disabled={url === ''} href={url} variant="contained">
+    <Button color="primary" disabled={url === ''} href={url} variant="contained" {...props}>
       {title}
     </Button>
   );
