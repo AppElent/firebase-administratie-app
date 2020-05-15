@@ -42,7 +42,7 @@ const SettingCardSolaredge = ({}) => {
       <CardContent>
         <TextField
           fullWidth
-          helperText={userInfo.solaredge.success ? 'Configuratie is succesvol' : ''}
+          helperText={userInfo.solaredge.access_token ? 'Configuratie is succesvol' : ''}
           label="API Key"
           name="key"
           onChange={handleOnChange}
@@ -60,7 +60,7 @@ const SettingCardSolaredge = ({}) => {
         <Button
           className={classes.deleteButton}
           onClick={() => {
-            ref.update({ solaredge: { success: false } });
+            ref.update({ solaredge: {} });
             setInitial();
           }}
           variant="outlined"

@@ -27,7 +27,7 @@ export const settings = {
 
 const SettingCardEnelogic = () => {
   const classes = useStyles();
-  const { userInfo, ref } = useSession();
+  const session = useSession();
   const { t } = useTranslation();
 
   return (
@@ -36,8 +36,8 @@ const SettingCardEnelogic = () => {
       <Divider />
       <CardContent>
         <Typography>
-          {userInfo.enelogic.success
-            ? `Registratie vanaf: ${userInfo.enelogic.measuringpoints.electra.dayMin}`
+          {session.userInfo.enelogic.token
+            ? `Registratie vanaf: ${session.userInfo.enelogic.measuringpoints.electra.dayMin}`
             : 'Enelogic connectie is niet gemaakt. Deze is nodig om de meterstanden op te kunnen halen.'}
         </Typography>
       </CardContent>
@@ -48,7 +48,7 @@ const SettingCardEnelogic = () => {
           formatUrlKey="format_url_enelogic"
           title={t('buttons.connect') + ' Enelogic'}
         />
-        <Button className={classes.deleteButton} onClick={settings.deleteSettings(ref)} variant="outlined">
+        <Button className={classes.deleteButton} onClick={settings.deleteSettings(session)} variant="outlined">
           {t('buttons.delete')}
         </Button>
       </CardActions>

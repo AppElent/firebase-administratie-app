@@ -27,7 +27,6 @@ export const settings = {
 };
 
 const saveTadoSetings = (session: any) => async (state: any) => {
-  console.log(session, state);
   try {
     const token = await fetchBackend('/api/oauth/exchange/tado', {
       user: session.user,

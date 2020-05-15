@@ -31,15 +31,6 @@ const microsoftSaveFunction = async (session: any, accesstoken: any) => {
   session.ref.update({ microsoft: saveObject });
 };
 
-const defaultSaveFunction = (name: string) => async (session: any, accesstoken: any) => {
-  console.log(accesstoken);
-  const saveObject = {
-    success: accesstoken.success,
-    token: accesstoken.data.token,
-  };
-  session.ref.update({ [name]: saveObject });
-};
-
 const defaultDeleteFunction = (name: string) => async (session: any) => {
   session.ref.update({ [name]: { success: false } });
 };
@@ -66,6 +57,7 @@ const OAuthPage = (): JSX.Element => {
     bunq: bunqSettings,
     enelogic: enelogicSettings,
     microsoft: {},
+    google: {},
   };
 
   const oauthSettings: any = oauthConfig[name];
@@ -83,7 +75,6 @@ const OAuthPage = (): JSX.Element => {
           code={queryParams.code}
           exchangeUrl={exchangeUrl}
           redirectUrl={redirectUrl}
-          saveFunction={oauthSettings.saveSettings ?? defaultSaveFunction(name)}
           state={queryParams.state}
         />
       );
@@ -92,21 +83,17 @@ const OAuthPage = (): JSX.Element => {
     }
   }
   if (action === 'refresh') {
-    const updateFunction = oauthSettings.updateSettings ?? oauthSettings.saveSettings ?? defaultSaveFunction(name);
+    const updateFunction = oauthSettings.updateSettings ?? oauthSettings.saveSettings;
     return (
       <>
         <Typography variant="h1">OAuth 2.0 refresh</Typography>
-        <OauthRefresh
-          refreshUrl={refreshUrl}
-          saveFunction={updateFunction}
-          token={session.userInfo[name].token}
-        ></OauthRefresh>
+        <OauthRefresh refreshUrl={refreshUrl} token={session.userInfo[name].token}></OauthRefresh>
       </>
     );
   }
 
   const deleteFunction = oauthSettings.deleteSettings ?? defaultDeleteFunction(name);
-  const updateFunction = oauthSettings.updateSettings ?? oauthSettings.saveSettings ?? defaultSaveFunction(name);
+  const updateFunction = oauthSettings.updateSettings ?? oauthSettings.saveSettings;
   return (
     <div>
       <Typography variant="h1">OAuth 2.0 {name}</Typography>
@@ -121,8 +108,7 @@ const OAuthPage = (): JSX.Element => {
       <OauthRefresh
         className={classes.button}
         refreshUrl={refreshUrl}
-        saveFunction={updateFunction}
-        token={session.userInfo[name].token}
+        token={session.userInfo[name]?.token}
       ></OauthRefresh>
       <Button
         className={classes.deleteButton}

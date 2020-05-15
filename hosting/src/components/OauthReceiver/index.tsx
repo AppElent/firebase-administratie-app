@@ -8,7 +8,7 @@ import { fetchBackend } from 'helpers';
 type OauthReceiverType = {
   code: string;
   exchangeUrl: string;
-  saveFunction: (session: any, token: any) => void;
+  saveFunction?: (session: any, token: any) => void;
   redirectUrl?: string | undefined;
   state?: string;
 };

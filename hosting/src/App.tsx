@@ -17,6 +17,7 @@ import Log from 'modules/Log';
 
 import FirebaseContext from './context/FirebaseContext';
 import { CacheContext, getCache, setCache, clearCache, clearKey } from './context/CacheContext';
+import { SocketIOProvider, useSocket } from 'modules/SocketIO';
 
 // Create logger
 localStorage.setItem('debug', 'administratie-app:*');
@@ -69,6 +70,8 @@ const App: FunctionComponent = () => {
     userInfo: {},
     log,
   });
+
+  const [firebaseToken, setFirebaseToken] = useState<string>();
 
   let environment = 'production';
   let apiUrl = 'https://api.appelent.com';
@@ -140,32 +143,44 @@ const App: FunctionComponent = () => {
     });
     }, [authData.isInitializing, authData.user]); //eslint-disable-line
 
+  useEffect(() => {
+    if (authData.user !== null) {
+      authData.user?.getIdToken().then(token => {
+        setFirebaseToken(token);
+      });
+    }
+  }, [authData.user]);
+
   if (authData.isInitializing || (authData.user !== null && !authData.userInfo?.enelogic)) {
     return <div>Loading</div>;
   }
 
+  const socketIoOptions = { query: { token: firebaseToken } };
+
   return (
-    <I18nextProvider i18n={i18n}>
-      <FirebaseContext.Provider value={authData}>
-        <CacheContext.Provider
-          value={{
-            data: cacheData,
-            get: getCache(cacheData),
-            set: setCache(setCacheData),
-            clear: clearCache(setCacheData),
-            clearKey: clearKey(setCacheData),
-          }}
-        >
-          <ThemeProvider theme={theme}>
-            <SnackbarProvider maxSnack={3}>
-              <Router history={browserHistory}>
-                <Routes />
-              </Router>
-            </SnackbarProvider>
-          </ThemeProvider>
-        </CacheContext.Provider>
-      </FirebaseContext.Provider>
-    </I18nextProvider>
+    <SocketIOProvider url={apiUrl} opts={socketIoOptions}>
+      <I18nextProvider i18n={i18n}>
+        <FirebaseContext.Provider value={authData}>
+          <CacheContext.Provider
+            value={{
+              data: cacheData,
+              get: getCache(cacheData),
+              set: setCache(setCacheData),
+              clear: clearCache(setCacheData),
+              clearKey: clearKey(setCacheData),
+            }}
+          >
+            <ThemeProvider theme={theme}>
+              <SnackbarProvider maxSnack={3}>
+                <Router history={browserHistory}>
+                  <Routes />
+                </Router>
+              </SnackbarProvider>
+            </ThemeProvider>
+          </CacheContext.Provider>
+        </FirebaseContext.Provider>
+      </I18nextProvider>
+    </SocketIOProvider>
   );
 };
 

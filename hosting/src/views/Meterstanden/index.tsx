@@ -22,7 +22,7 @@ const Meterstanden = () => {
 
   const { tab, handleTabChange } = useTabs('live');
 
-  if (!userInfo.enelogic.success) {
+  if (!userInfo.enelogic.token) {
     if (tab === 'overzicht') handleTabChange(null, 'settings');
   }
 
@@ -38,7 +38,7 @@ const Meterstanden = () => {
             variant="scrollable"
           >
             <Tab label="Live" value="live" />
-            <Tab label="Overzicht" value="overzicht" disabled={!userInfo.enelogic.success} />
+            <Tab label="Overzicht" value="overzicht" disabled={!userInfo.enelogic.token} />
             <Tab label="Kosten overzicht" value="kostenoverzicht" />
             <Tab label="Instellingen" value="settings" />
           </Tabs>

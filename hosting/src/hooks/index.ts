@@ -29,3 +29,4 @@ export {
 
 export { useSession } from 'context/FirebaseContext';
 export { useCache } from 'context/CacheContext';
+export { useSocket } from 'modules/SocketIO';

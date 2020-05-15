@@ -12,7 +12,7 @@
           "staging-administratie"
         ],
         "prod": [
-          "adminstratie-app"
+          "administratie-app"
         ]
       }
     }

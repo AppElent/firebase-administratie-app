@@ -19,7 +19,11 @@ const refreshOauth = async (
     moment().format('YYYY-MM-DD HH:mm'),
     'refreshOauth.ts, line 16',
   );
-  const refreshedToken = await fetchBackend(url, { user: session.user, method: 'POST', body: { token: accesstoken } });
+  const refreshedToken = await fetchBackend(url, {
+    user: session.user,
+    method: 'POST',
+    body: { force, token: accesstoken },
+  });
   if (saveFunction) {
     await saveFunction(session, refreshedToken);
   }
