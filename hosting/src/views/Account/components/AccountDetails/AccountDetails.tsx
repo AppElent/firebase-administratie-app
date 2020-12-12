@@ -105,7 +105,7 @@ const AccountDetails: any = (props: InferProps<typeof AccountDetails.propTypes>)
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>): void => {
                     i18n.changeLanguage(e.target.value);
                   }}
-                  value={i18n.language}
+                  value={i18n.language || 'English'}
                 >
                   <ResponsiveSelectItem value="en">English</ResponsiveSelectItem>
                   <ResponsiveSelectItem value="nl">Nederlands</ResponsiveSelectItem>
